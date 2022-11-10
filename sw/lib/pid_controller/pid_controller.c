@@ -74,3 +74,4 @@ void pid_controller_set_kdd(pid_controller_t* controller, uint32_t kdd) {
     controller->kdd = kdd;
 }
 
+// TODO: add additional functions for changing duty cycle, error, etc.
