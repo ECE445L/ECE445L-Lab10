@@ -25,15 +25,15 @@ int main(void) {
     PLL_Init(Bus80MHz);
 
     // initialize things
-    
+
     // initialize pid controller
     pid_controller_t pid_controller = pid_controller_init(0, 0, 0, 0, 0, 0);
 
     EnableInterrupts();
-    
+
     // start pid controller parser (never returns)
     pid_controller_parser_start(&pid_controller);
-    
+
     // should never reach
     return 1;
 }

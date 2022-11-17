@@ -1,9 +1,9 @@
 /**
  * @file pid_controller_parser.c
- * @author Jared McArthur
+ * @author your name (your_email@doman.com), Jared McArthur
  * @brief Serial input parser for the PID controller
  * @version 0.1
- * @date 2022-11-09
+ * @date 2022-11-17
  * 
  * @copyright Copyright (c) 2022
  * 
@@ -103,7 +103,7 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
         uint32_t param_index = 0;
         // overlook leading whitespace
         // 0x09, 0x0A, 0x0C, 0x0D, 0x20
-        while (uart_buffer[i] == 0x09 || uart_buffer[i] == 0x0A || uart_buffer[i] == 0x0C || uart_buffer[i] == 0x0D || uart_buffer[i] == 0x20 || uart_buffer[i] == '\0') {
+        while ((uart_buffer[i] == 0x09 || uart_buffer[i] == 0x0A || uart_buffer[i] == 0x0C || uart_buffer[i] == 0x0D || uart_buffer[i] == 0x20) && uart_buffer[i] != '\0') {
             ++i;
         }
         // fill cmd
@@ -113,7 +113,7 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
         // null terminate cmd
         cmd_buffer[cmd_index] = '\0';
         // overlook whitespace between cmd and param
-        while (uart_buffer[i] == 0x09 || uart_buffer[i] == 0x0A || uart_buffer[i] == 0x0C || uart_buffer[i] == 0x0D || uart_buffer[i] == 0x20 || uart_buffer[i] == '\0') {
+        while ((uart_buffer[i] == 0x09 || uart_buffer[i] == 0x0A || uart_buffer[i] == 0x0C || uart_buffer[i] == 0x0D || uart_buffer[i] == 0x20) && uart_buffer[i] != '\0') {
             ++i;
         }
         // fill param
@@ -125,7 +125,7 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
 
         // turn param into an integer
         uint32_t param = str_to_uint(param_buffer);
-        
+
         // execute cmd accordingly
         // set kpn
         if (str_equals(cmd_buffer, "kpn")) {
@@ -198,6 +198,7 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
             UART_OutUDec(pid_controller->kdd);
             UART_OutString("\n\r");
         }
+        // TODO: add another command for setting the desired_speed
         // print help statement
         // Motor Controller Parser Help:
         //   usage: [help, h] cmd param

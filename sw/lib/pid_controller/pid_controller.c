@@ -1,9 +1,9 @@
 /**
  * @file pid_controller_parser.c
- * @author Jared McArthur
- * @brief 
+ * @author your name (your_email@doman.com), Jared McArthur
+ * @brief PID controller struct and relevant functions
  * @version 0.1
- * @date 2022-11-09
+ * @date 2022-11-17
  * 
  * @copyright Copyright (c) 2022
  * 
@@ -11,7 +11,20 @@
 
 #include "lib/pid_controller/pid_controller.h"
 
-pid_controller_t pid_controller_init(uint32_t kpn, uint32_t kpd, uint32_t kin, uint32_t kid, uint32_t kdn, uint32_t kdd) {
+pid_controller_t pid_controller_init(int32_t kpn, int32_t kpd, int32_t kin, int32_t kid, int32_t kdn, int32_t kdd) {
+    // prevent 0s in denominators
+    kpd = (!kpd * 1) + kpd;
+    kid = (!kid * 1) + kid;
+    kdd = (!kdd * 1) + kdd;
+
+    // prevent negative numbers
+    kpn = ((((kpn & 0x80000000) >> 31) * -1) ^ kpn) + ((kpn & 0x80000000) >> 31);
+    kpd = ((((kpd & 0x80000000) >> 31) * -1) ^ kpd) + ((kpd & 0x80000000) >> 31);
+    kin = ((((kin & 0x80000000) >> 31) * -1) ^ kin) + ((kin & 0x80000000) >> 31);
+    kid = ((((kid & 0x80000000) >> 31) * -1) ^ kid) + ((kid & 0x80000000) >> 31);
+    kdn = ((((kpn & 0x80000000) >> 31) * -1) ^ kdn) + ((kdn & 0x80000000) >> 31);
+    kdd = ((((kdd & 0x80000000) >> 31) * -1) ^ kdd) + ((kdd & 0x80000000) >> 31);
+
     pid_controller_t pid_controller = {
         .kpn = kpn,
         .kpd = kpd,
@@ -21,57 +34,9 @@ pid_controller_t pid_controller_init(uint32_t kpn, uint32_t kpd, uint32_t kin, u
         .kdd = kdd
     };
 
-    // TODO: initialize timer(s) to change duty cycle, get error, etc.
+    // TODO: initialize timer(s) and input capture(s) to view and edit speed, error, etc.
 
     return pid_controller;
 }
 
-uint32_t pid_controller_get_kpn(pid_controller_t* controller) {
-    return controller->kpn;
-}
-
-uint32_t pid_controller_get_kpd(pid_controller_t* controller) {
-    return controller->kpd;
-}
-
-uint32_t pid_controller_get_kin(pid_controller_t* controller) {
-    return controller->kin;
-}
-
-uint32_t pid_controller_get_kid(pid_controller_t* controller) {
-    return controller->kid;
-}
-
-uint32_t pid_controller_get_kdn(pid_controller_t* controller) {
-    return controller->kdn;
-}
-
-uint32_t pid_controller_get_kdd(pid_controller_t* controller) {
-    return controller->kdd;
-}
-
-void pid_controller_set_kpn(pid_controller_t* controller, uint32_t kpn) {
-    controller->kpn = kpn;
-}
-
-void pid_controller_set_kpd(pid_controller_t* controller, uint32_t kpd) {
-    controller->kpd = kpd;
-}
-
-void pid_controller_set_kin(pid_controller_t* controller, uint32_t kin) {
-    controller->kin = kin;
-}
-
-void pid_controller_set_kid(pid_controller_t* controller, uint32_t kid) {
-    controller->kid = kid;
-}
-
-void pid_controller_set_kdn(pid_controller_t* controller, uint32_t kdn) {
-    controller->kdn = kdn;
-}
-
-void pid_controller_set_kdd(pid_controller_t* controller, uint32_t kdd) {
-    controller->kdd = kdd;
-}
-
-// TODO: add additional functions for changing duty cycle, error, etc.
+// TODO: add additional functions for executing the logic for the PID controller
