@@ -4,9 +4,9 @@
  *              <TA NAME and LAB SECTION # HERE>
  * @brief       An empty main file for running lab10.
  * @version     0.1.0
- * @date        2022-11-09 <REPLACE WITH DATE OF LAST REVISION>
+ * @date        2022-11-17 <REPLACE WITH DATE OF LAST REVISION>
  * 
- * @copyright   Copyright (c) 2022     
+ * @copyright   Copyright (c) 2022
  */
 
 #include <stdint.h>

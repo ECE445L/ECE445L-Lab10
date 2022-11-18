@@ -12,11 +12,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "inc/CortexM.h"
 #include "inc/UART.h"
 
 #include "lib/pid_controller/pid_controller_parser.h"
 
-#define MAX_CMD_SIZE    20      // max size for a parser command
+#define MAX_CMD_SIZE 20     // max size for a parser command
 
 // uart buffer to store characters
 static char uart_buffer[MAX_CMD_SIZE + 2] = {0};
@@ -56,8 +57,14 @@ uint32_t str_to_uint(char* str) {
 }
 
 void pid_controller_parser_start(pid_controller_t* pid_controller) {
+    // disable interrupts during initialization
+    DisableInterrupts();
+
     // initialize UART on PA1-0
     UART_Init();
+
+    // enable interrupts so that UART functions
+    EnableInterrupts();
 
     // output the usage of the parser
     UART_OutString(
@@ -82,9 +89,9 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
             // get a character from the input
             character = UART_InChar();
             // delete an input character
-            if (character == DEL && uart_buffer_index) {
+            if ((character == DEL || character == BS) && uart_buffer_index) {
                 --uart_buffer_index;
-                UART_OutChar(character);
+                UART_OutChar(DEL);
             }
             // add a character to buffer
             else if (uart_buffer_index < MAX_CMD_SIZE) {
@@ -198,7 +205,7 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
             UART_OutUDec(pid_controller->kdd);
             UART_OutString("\n\r");
         }
-        // TODO: add another command for setting the desired_speed
+        // TODO: add another command for setting the desired speed
         // print help statement
         // Motor Controller Parser Help:
         //   usage: [help, h] cmd param

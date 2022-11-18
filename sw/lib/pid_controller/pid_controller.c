@@ -17,13 +17,13 @@ pid_controller_t pid_controller_init(int32_t kpn, int32_t kpd, int32_t kin, int3
     kid = (!kid * 1) + kid;
     kdd = (!kdd * 1) + kdd;
 
-    // prevent negative numbers
-    kpn = ((((kpn & 0x80000000) >> 31) * -1) ^ kpn) + ((kpn & 0x80000000) >> 31);
-    kpd = ((((kpd & 0x80000000) >> 31) * -1) ^ kpd) + ((kpd & 0x80000000) >> 31);
-    kin = ((((kin & 0x80000000) >> 31) * -1) ^ kin) + ((kin & 0x80000000) >> 31);
-    kid = ((((kid & 0x80000000) >> 31) * -1) ^ kid) + ((kid & 0x80000000) >> 31);
-    kdn = ((((kpn & 0x80000000) >> 31) * -1) ^ kdn) + ((kdn & 0x80000000) >> 31);
-    kdd = ((((kdd & 0x80000000) >> 31) * -1) ^ kdd) + ((kdd & 0x80000000) >> 31);
+    // convert negative numbers into positive
+    kpn = (((((kpn & 0x80000000) >> 31) * -1) ^ kpn) + ((kpn & 0x80000000) >> 31)) & ~0x80000000;
+    kpd = (((((kpd & 0x80000000) >> 31) * -1) ^ kpd) + ((kpd & 0x80000000) >> 31)) & ~0x80000000;
+    kin = (((((kin & 0x80000000) >> 31) * -1) ^ kin) + ((kin & 0x80000000) >> 31)) & ~0x80000000;
+    kid = (((((kid & 0x80000000) >> 31) * -1) ^ kid) + ((kid & 0x80000000) >> 31)) & ~0x80000000;
+    kdn = (((((kpn & 0x80000000) >> 31) * -1) ^ kdn) + ((kdn & 0x80000000) >> 31)) & ~0x80000000;
+    kdd = (((((kdd & 0x80000000) >> 31) * -1) ^ kdd) + ((kdd & 0x80000000) >> 31)) & ~0x80000000;
 
     pid_controller_t pid_controller = {
         .kpn = kpn,
