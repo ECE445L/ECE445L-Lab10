@@ -163,7 +163,7 @@ To interface the tachometer, connect VCC to 3.3V and GND to GND. Choose a TM4C12
 
 ![Figure 10.7](resources/figures/figure_10.7.png)
 
-*Figure 10.7: Step response of the DC motor used to stimate the time constant. Expect your measured speeds to be slower (this data was collected at 7.2V*
+*Figure 10.7: Step response of the DC motor used to simulate the time constant. Expect your measured speeds to be slower (this data was collected at 7.2V)*
 
 The tachometer interface may require filtering to improve SNR. However, be careful to minimize time delay. Time delays in the digital controller will cause the system to be unstable. For any digital filter measure the step response. A simple measure of filter delay is to make input go from …x,x,x,x,y,y,y,y… and determine many samples it takes for the output of the filter to reach x+(y-x)e-1.  For example, the delay of a 3-wide median filter is 1 sample.
 
@@ -285,7 +285,7 @@ In the images below measured and desired speeds are plotted versus time as the s
    2. LCD and switch interfaces, showing all external components
 3. Software design
    1. Include units on all software variables
-   2. Clear destinction between variables used for debugging and variables needed in the controller
+   2. Clear distinction between variables used for debugging and variables needed in the controller
 4. Measurement data
    1. Voltage, current and resistance measurements of the motor
    2. Graph of `motor current` vs `duty cycle * Vm`
@@ -303,7 +303,7 @@ In the images below measured and desired speeds are plotted versus time as the s
       1. P controller
       2. I controller
       3. PI controller
-   10. Specify response time for differenct controllers:
+   10. Specify response time for different controllers:
        1. P controller
        2. I controller
        3. PI controller
