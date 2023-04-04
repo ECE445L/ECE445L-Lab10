@@ -27,7 +27,7 @@ int main(void) {
     // initialize things
     
     // initialize pid controller
-    pid_controller_t pid_controller = pid_controller_init(0, 0, 0, 0, 0, 0);
+    pid_controller_t pid_controller = pid_controller_init(0, 0, 0, 0, 0, 0, 0);
 
     EnableInterrupts();
     

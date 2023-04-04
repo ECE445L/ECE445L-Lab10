@@ -11,6 +11,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "inc/UART.h"
 
@@ -57,27 +58,29 @@ uint32_t str_to_uint(char* str) {
 
 void pid_controller_parser_start(pid_controller_t* pid_controller) {
     // initialize UART on PA1-0
-    UART_Init();
+    Output_Init();              // initialize output device
 
     // output the usage of the parser
-    UART_OutString(
-        "Motor Controller Parser:\n\r"
-        "  usage: [help, h] cmd [param]\n\r"
-        "  cmd: which coefficient to change\n\r"
-        "    kpn - set the kpn\n\r"
-        "    kpd - set the kpd\n\r"
-        "    kin - set the kin\n\r"
-        "    kid - set the kid\n\r"
-        "    kdn - set the kdn\n\r"
-        "    kdd - set the kdd\n\r"
-        "    get - output current coefficients\n\r"
-        "  param: unsigned integer to set the coefficient to\n\r"
+    printf(
+        "Motor Controller Parser:\n"
+        "  usage: [help, h] cmd [param]\n"
+        "  cmd: which coefficient to change\n"
+        "    kpn   - set the kpn\n"
+        "    kpd   - set the kpd\n"
+        "    kin   - set the kin\n"
+        "    kid   - set the kid\n"
+        "    kdn   - set the kdn\n"
+        "    kdd   - set the kdd\n"
+        "    spd   - set the desired speed\n"
+        "    stats - output pid controller stats\n"
+        "    coeff - output current coefficients\n"
+        "  param: unsigned integer to set the coefficient to\n"
     );
-
+    
     // spin and wait for UART inputs
     char character;
     while (1) {
-        UART_OutString("Enter command...\n\r");
+        printf("Enter command...\n");
         do {
             // get a character from the input
             character = UART_InChar();
@@ -95,7 +98,7 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
         // null terminate the command
         uart_buffer[--uart_buffer_index] = '\0';
         uart_buffer_index = 0;
-        UART_OutString("\n\r");
+        printf("\n");
 
         // parse the command
         uint32_t i = 0;
@@ -130,44 +133,56 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
         // set kpn
         if (str_equals(cmd_buffer, "kpn")) {
             pid_controller->kpn = param;
-            UART_OutString("kpn set to: ");
-            UART_OutUDec(param);
-            UART_OutString("\n\r");
+            printf("kpn set to: %d\n", param);
         }
         // set kpd
         else if (str_equals(cmd_buffer, "kpd")) {
             pid_controller->kpd = param;
-            UART_OutString("kpd set to: ");
-            UART_OutUDec(param);
-            UART_OutString("\n\r");
+            printf("kpd set to: %d\n", param);
         }
         // set kin
         else if (str_equals(cmd_buffer, "kin")) {
             pid_controller->kin = param;
-            UART_OutString("kin set to: ");
-            UART_OutUDec(param);
-            UART_OutString("\n\r");
+            printf("kin set to: %d\n", param);
         }
         // set kid
         else if (str_equals(cmd_buffer, "kid")) {
             pid_controller->kid = param;
-            UART_OutString("kid set to: ");
-            UART_OutUDec(param);
-            UART_OutString("\n\r");
+            printf("kid set to: %d\n", param);
         }
         // set kdn
         else if (str_equals(cmd_buffer, "kdn")) {
             pid_controller->kdn = param;
-            UART_OutString("kdn set to: ");
-            UART_OutUDec(param);
-            UART_OutString("\n\r");
+            printf("kdn set to: %d\n", param);
         }
         // set kdd
         else if (str_equals(cmd_buffer, "kdd")) {
             pid_controller->kdd = param;
-            UART_OutString("kdd set to: ");
-            UART_OutUDec(param);
-            UART_OutString("\n\r");
+            printf("kdd set to: %d\n", param);
+        }
+        // set spd
+        else if (str_equals(cmd_buffer, "spd")) {
+            pid_controller->des_spd = param;
+            printf("spd set to: %d\n", param);
+        }
+        else if (str_equals(cmd_buffer, "stats")) {
+            printf(
+                "Motor Controller Stats:\n"
+                "  desired speed - %d\n"
+                "  actual speed  - %d\n"
+                "  p             - %d\n"
+                "  i             - %d\n"
+                "  d             - %d\n"
+                "  u             - %d\n"
+                "  err           - %d\n",
+                pid_controller->des_spd,
+                pid_controller->act_spd,
+                pid_controller->p,
+                pid_controller->i,
+                pid_controller->d,
+                pid_controller->u,
+                pid_controller->err
+            );
         }
         // output coefficients
         // Current PID Controller Coefficients:
@@ -177,26 +192,22 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
         //   kid - [kid]
         //   kdn - [kdn]
         //   kdd - [kdd]
-        else if (str_equals(cmd_buffer, "get")) {
-            UART_OutString("Current PID Controller Coefficients:\n\r");
-            UART_OutString("  kpn - ");
-            UART_OutUDec(pid_controller->kpn);
-            UART_OutString("\n\r");
-            UART_OutString("  kpd - ");
-            UART_OutUDec(pid_controller->kpd);
-            UART_OutString("\n\r");
-            UART_OutString("  kin - ");
-            UART_OutUDec(pid_controller->kin);
-            UART_OutString("\n\r");
-            UART_OutString("  kid - ");
-            UART_OutUDec(pid_controller->kid);
-            UART_OutString("\n\r");
-            UART_OutString("  kdn - ");
-            UART_OutUDec(pid_controller->kdn);
-            UART_OutString("\n\r");
-            UART_OutString("  kdd - ");
-            UART_OutUDec(pid_controller->kdd);
-            UART_OutString("\n\r");
+        else if (str_equals(cmd_buffer, "coeff")) {
+            printf(
+                "Motor Controller Coefficients:\n"
+                "  kpn - %d\n"
+                "  kpd - %d\n"
+                "  kin - %d\n"
+                "  kid - %d\n"
+                "  kdn - %d\n"
+                "  kdd - %d\n",
+                pid_controller->kpn,
+                pid_controller->kpd,
+                pid_controller->kin,
+                pid_controller->kid,
+                pid_controller->kdn,
+                pid_controller->kdd
+            );
         }
         // print help statement
         // Motor Controller Parser Help:
@@ -208,26 +219,29 @@ void pid_controller_parser_start(pid_controller_t* pid_controller) {
         //     kid - set the kid
         //     kdn - set the kdn
         //     kdd - set the kdd
-        //     get - output current coefficients
+        //     spd - set the desired speed
+        //     get - output pid controller status
         //   param: unsigned integer to set the coefficient to
         else if (str_equals(cmd_buffer, "help") || str_equals(cmd_buffer, "h")) {
-            UART_OutString(
-                "Motor Controller Parser Help:\n\r"
-                "  usage: [help, h] cmd param\n\r"
-                "  cmd: which coefficient to change\n\r"
-                "    kpn - set the kpn\n\r"
-                "    kpd - set the kpd\n\r"
-                "    kin - set the kin\n\r"
-                "    kid - set the kid\n\r"
-                "    kdn - set the kdn\n\r"
-                "    kdd - set the kdd\n\r"
-                "    get - output current coefficients\n\r"
-                "  param: unsigned integer to set the coefficient to\n\r"
+            printf(
+                "Motor Controller Parser:\n"
+                "  usage: [help, h] cmd [param]\n"
+                "  cmd: which coefficient to change\n"
+                "    kpn     - set the kpn\n"
+                "    kpd     - set the kpd\n"
+                "    kin     - set the kin\n"
+                "    kid     - set the kid\n"
+                "    kdn     - set the kdn\n"
+                "    kdd     - set the kdd\n"
+                "    spd     - set the desired speed\n"
+                "    stats   - output pid controller stats\n"
+                "    coeff   - output current coefficients\n"
+                "  param: unsigned integer to set the coefficient to\n"
             );
         }
         // invalid command
         else {
-            UART_OutString("Invalid command...\n\r");
+            printf("Invalid command...\n");
         }
     }
 }

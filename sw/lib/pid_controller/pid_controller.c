@@ -11,66 +11,24 @@
 
 #include "lib/pid_controller/pid_controller.h"
 
-pid_controller_t pid_controller_init(uint32_t kpn, uint32_t kpd, uint32_t kin, uint32_t kid, uint32_t kdn, uint32_t kdd) {
+pid_controller_t pid_controller_init(int32_t kpn, int32_t kpd, int32_t kin, int32_t kid, int32_t kdn, int32_t kdd, int32_t des_spd) {
     pid_controller_t pid_controller = {
         .kpn = kpn,
         .kpd = kpd,
         .kin = kin,
         .kid = kid,
         .kdn = kdn,
-        .kdd = kdd
+        .kdd = kdd,
+        .des_spd = des_spd,
+        .act_spd = 0,
+        .p   = 0,
+        .i   = 0,
+        .d   = 0,
+        .u   = 0,
+        .err = 0
     };
 
     // TODO: initialize timer(s) to change duty cycle, get error, etc.
 
     return pid_controller;
 }
-
-uint32_t pid_controller_get_kpn(pid_controller_t* controller) {
-    return controller->kpn;
-}
-
-uint32_t pid_controller_get_kpd(pid_controller_t* controller) {
-    return controller->kpd;
-}
-
-uint32_t pid_controller_get_kin(pid_controller_t* controller) {
-    return controller->kin;
-}
-
-uint32_t pid_controller_get_kid(pid_controller_t* controller) {
-    return controller->kid;
-}
-
-uint32_t pid_controller_get_kdn(pid_controller_t* controller) {
-    return controller->kdn;
-}
-
-uint32_t pid_controller_get_kdd(pid_controller_t* controller) {
-    return controller->kdd;
-}
-
-void pid_controller_set_kpn(pid_controller_t* controller, uint32_t kpn) {
-    controller->kpn = kpn;
-}
-
-void pid_controller_set_kpd(pid_controller_t* controller, uint32_t kpd) {
-    controller->kpd = kpd;
-}
-
-void pid_controller_set_kin(pid_controller_t* controller, uint32_t kin) {
-    controller->kin = kin;
-}
-
-void pid_controller_set_kid(pid_controller_t* controller, uint32_t kid) {
-    controller->kid = kid;
-}
-
-void pid_controller_set_kdn(pid_controller_t* controller, uint32_t kdn) {
-    controller->kdn = kdn;
-}
-
-void pid_controller_set_kdd(pid_controller_t* controller, uint32_t kdd) {
-    controller->kdd = kdd;
-}
-
