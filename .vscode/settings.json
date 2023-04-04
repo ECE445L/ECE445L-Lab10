@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "uart.h": "c",
-        "motor_controller_parser.h": "c",
-        "pid_controller.h": "c",
-        "pid_controller_parser.h": "c"
-    }
-}
