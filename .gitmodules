@@ -1,0 +1,3 @@
+[submodule "sw/inc"]
+	path = sw/inc
+	url = https://github.com/ECE445L/ECE445L-Software-Libraries.git
