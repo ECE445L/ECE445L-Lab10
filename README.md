@@ -2,7 +2,7 @@
 
 ECE445L Lab 10 Template.
 
-[Lab 10 README](ECE%20445L%20Fall%202023%20Lab%2010.docx)
+[Lab 10 README](Lab10.docx)
 
 IMPORTANT (for those not using Github Classroom): To clone this repository,
 click the green "Use this template" button and create a PRIVATE repository. Do
