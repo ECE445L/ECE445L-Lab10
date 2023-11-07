@@ -72,9 +72,9 @@
 // CS   - PA3 TFT_CS, active low to enable TFT
 // *CS  - (NC) SDC_CS, active low to enable SDC
 // MISO - (NC) MISO SPI data from SDC to microcontroller
-// SDA  – (NC) I2C data for ADXL345 accelerometer
-// SCL  – (NC) I2C clock for ADXL345 accelerometer
-// SDO  – (NC) I2C alternate address for ADXL345 accelerometer
+// SDA  ï¿½ (NC) I2C data for ADXL345 accelerometer
+// SCL  ï¿½ (NC) I2C clock for ADXL345 accelerometer
+// SDO  ï¿½ (NC) I2C alternate address for ADXL345 accelerometer
 // Backlight + - Light, backlight connected to +3.3 V
 
 // **********wide.hk ST7735R with ADXL335 accelerometer *******************
@@ -88,9 +88,9 @@
 // CS   - PA3 TFT_CS, active low to enable TFT
 // *CS  - (NC) SDC_CS, active low to enable SDC
 // MISO - (NC) MISO SPI data from SDC to microcontroller
-// X– (NC) analog input X-axis from ADXL335 accelerometer
-// Y– (NC) analog input Y-axis from ADXL335 accelerometer
-// Z– (NC) analog input Z-axis from ADXL335 accelerometer
+// Xï¿½ (NC) analog input X-axis from ADXL335 accelerometer
+// Yï¿½ (NC) analog input Y-axis from ADXL335 accelerometer
+// Zï¿½ (NC) analog input Z-axis from ADXL335 accelerometer
 // Backlight + - Light, backlight connected to +3.3 V
 
 // **********HiLetgo ST7735 TFT and SDC (SDC not tested)*******************
@@ -1871,6 +1871,61 @@ void ST7735_sDecOut2(int32_t n){
   }
 }
 
+/**
+ * @brief ST7735_sDecOut3 converts a signed 32-bit decimal fixed point number
+ *        into LCD format.
+ *
+ * @param n Signed 32-bit integer part of fixed-point number.
+ * @note  resolution 0.001
+ *        range -99.999 to +99.999
+ * @example Expected Output
+ *    Parameter | LCD display
+ *            0 |       0.000
+ *            4 |       0.004
+ *           -5 |       0.005
+ *           78 |       0.078
+ *        -1254 |      -1.254
+ *         9999 |       9.999
+ *       -10000 |     -10.000
+ *        12345 |      12.345
+ *       -56789 |     -56.789
+ *       -99999 |     -99.999
+ *        99999 |      99.999
+ *       100000 |      **.***
+ *      -100000 |     -**.***
+ */
+void ST7735_sDecOut3(int32_t n) {
+    /* TODO (ECE445L Lab 1): complete this. */
+}
+
+/**
+ * @brief ST7735_uBinOut5 converts an unsigned 32-bit binary fixed-point number
+ *        into LCD format.
+ *
+ * @param n Unsigned 32-bit integer part of binary fixed-point number.
+ * @note  resolution 1/32
+ *        range 0.00 to 999.99
+ *        if the integer part is larger than 31999, it signifies an error.
+ * @example Expected Output
+ *    Parameter | LCD display
+ *            0 |        0.00
+ *            1 |        0.03
+ *            5 |        0.16
+ *          100 |        3.13
+ *          127 |        3.97
+ *          252 |        7.88
+ *          535 |       16.72
+ *         2560 |       80.00
+ *         6092 |      190.38
+ *        13000 |      406.25
+ *        16383 |      511.97
+ *        17283 |      540.09
+ *        31999 |      999.97
+ *        32000 |      ***.**
+ */
+void ST7735_uBinOut5(uint32_t n) {
+    /* TODO (ECE445L Lab 1): complete this. */
+}
 
 /**************ST7735_uBinOut6***************
  unsigned 32-bit binary fixed-point with a resolution of 1/64. 
@@ -1931,29 +1986,30 @@ void ST7735_uBinOut6(uint32_t n){
 /**
  * @brief ST7735_XYplotInit specifies the X and Y axes for an X-Y scatter plot.
  *        It also draws the title and clears the plot area.
- * 
+ *
  * @param title ASCII null terminated string to label the plot.
- * @param minX  Smallest X data value allowed, resolution=1/32.
- * @param maxX  Largest X data value allowed, resolution=1/32.
- * @param minY  Smallest Y data value allowed, resolution=1/32.
- * @param maxY  Largest Y data value allowed, resolution=1/32.
+ * @param minX  Smallest X data value allowed
+ * @param maxX  Largest X data value allowed
+ * @param minY  Smallest Y data value allowed
+ * @param maxY  Largest Y data value allowed
  * @note Assumes minX < maxX, and minY < maxY.
  */
 void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY){
-    /* TODO (EE445L Lab 1): complete this. */
+    /* TODO (ECE445L Lab 1): complete this. */
 }
 
 /**
  * @brief ST7735_XYplot plots an array of (x, y) data.
- * 
+ *
  * @param num  Number of data points in the two arrays.
- * @param bufX Array of 32-bit fixed-point data, resolution=1/32.
- * @param bufY Array of 32-bit fixed-point data, resolution=1/32.
+ * @param bufX Array of 32-bit fixed-point data
+ * @param bufY Array of 32-bit fixed-point data
+ * @param color 16-bit color of the data points
  * @note Assumes ST7735_XYplotInit has been previously called, and should ignore
  *       all points beyond the minX, maxX, minY, maxY bounds.
  */
-void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]){
-    /* TODO (EE445L Lab 1): complete this. */
+void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[], uint16_t color) {
+    /* TODO (ECE445L Lab 1): complete this. */
 }
 
 // plotLine function that is used when dx is greater than dy
@@ -1969,7 +2025,8 @@ void plotLineX(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colo
   
   plotY = y1;
   
-  for(int32_t plotX = x1; plotX < x2; plotX++){
+  int32_t plotX;
+  for(plotX = x1; plotX < x2; plotX++){
     if(abs(dx) > abs(dy)){
       ST7735_DrawPixel(plotX, plotY, color);
       ST7735_DrawPixel(plotX, plotY+1, color);
@@ -2002,7 +2059,8 @@ void plotLineY(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colo
   
   plotX = x1;
   
-  for(int32_t plotY = y1; plotY < y2; plotY++){
+  int32_t plotY;
+  for(plotY = y1; plotY < y2; plotY++){
     if(abs(dx) > abs(dy)){
       ST7735_DrawPixel(plotX, plotY, color);
       ST7735_DrawPixel(plotX, plotY+1, color);

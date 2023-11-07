@@ -7,8 +7,8 @@
  *    There are two primary methods:
  *       - DebugCapture will record data and time.
  *       - JitterMeasure will measure real time jitter.
- * @version 0.1
- * @date 2022-01-31 <REPLACE WITH DATE OF LAST REVISION>
+ * @version 0.2
+ * @date 2022-09-01 <REPLACE WITH DATE OF LAST REVISION>
  *
  * @copyright Copyright (c) 2022
  */
@@ -24,6 +24,9 @@
  * 
  * @note Holds 0 up to DUMPBUFSIZE-1 elements. Each element is 32-bit data and
  *       32-bit time.
+ * @note Assume that Dump and Jitter methods are independent, but share Timer1.
+ *       Using both initialization functions at different times while they are both
+ *       active may result in erroneous timing.
  */
 void DumpInit(void);
 
@@ -62,6 +65,9 @@ uint32_t* DumpTime(void);
  *        time.
  * 
  * @note Assume that JitterMeasure is called from a periodic real-time task.
+ * @note Assume that Dump and Jitter methods are independent, but share Timer1.
+ *       Using both initialization functions at different times while they are both
+ *       active may result in erroneous timing.
  */
 void JitterInit(void);
 

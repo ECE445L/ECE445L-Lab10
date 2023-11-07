@@ -31,7 +31,6 @@
 #include "../inc/UART.h"
 #include "../inc/tm4c123gh6pm.h"
 
-
 #define UART_FR_TXFF            0x00000020  // UART Transmit FIFO Full
 #define UART_FR_RXFE            0x00000010  // UART Receive FIFO Empty
 #define UART_LCRH_WLEN_8        0x00000060  // 8 bit word length
@@ -358,5 +357,4 @@ void Output_Init(void){
   UART_Init();
 }
 #endif
-
 

@@ -71,6 +71,29 @@ void WaitForInterrupt(void) {
     __asm("    WFI");
 }
 
+long StartCritical(void) {
+    // Taken from Tivaware driverlib/cpu.c.
+    //
+    // Read PRIMASK and disable interrupts.
+    //
+    __asm("    mrs     r0, PRIMASK\n"
+          "    cpsid   i\n"
+          "    bx      lr\n");
+
+    //
+    // The following keeps the compiler happy, because it wants to see a
+    // return value from this function.  It will generate code to return
+    // a zero.  However, the real return is the "bx lr" above, so the
+    // return(0) is never executed and the function returns with the value
+    // you expect in R0.
+    //
+    return(0);
+}
+
+void EndCritical(long sr) {
+    __asm("    MSR    PRIMASK, R0");
+}
+
 /**
  * Interrupt handlers references. Until defined by a STRONG handler in another file,
  * the default action is to go into the default interrupt handler. This simply enters
