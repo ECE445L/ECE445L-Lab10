@@ -190,7 +190,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>1</useUlib>
+            <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>rvmdk PART_LM4F120H5QR</Define>
               <Undefine></Undefine>
-              <IncludePath>..</IncludePath>
+              <IncludePath>..\sw</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -385,19 +385,19 @@
           <GroupName>inc</GroupName>
           <Files>
             <File>
-              <FileName>startup.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\inc\startup.s</FilePath>
-            </File>
-            <File>
               <FileName>PLL.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\inc\PLL.c</FilePath>
+              <FilePath>.\inc\PLL.c</FilePath>
             </File>
             <File>
               <FileName>UART.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\inc\UART.c</FilePath>
+              <FilePath>.\inc\UART.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\inc\startup.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -407,12 +407,17 @@
             <File>
               <FileName>pid_controller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lib\pid_controller\pid_controller.c</FilePath>
+              <FilePath>.\lib\pid_controller\pid_controller.c</FilePath>
             </File>
             <File>
               <FileName>pid_controller_parser.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lib\pid_controller\pid_controller_parser.c</FilePath>
+              <FilePath>.\lib\pid_controller\pid_controller_parser.c</FilePath>
+            </File>
+            <File>
+              <FileName>tachometer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lib\tachometer\tachometer.c</FilePath>
             </File>
           </Files>
         </Group>
