@@ -11,14 +11,14 @@
 
 #include <stdint.h>
 
-#include "inc/tm4c123gh6pm.h"
-#include "inc/PLL.h"
-#include "inc/CortexM.h"
-#include "inc/Unified_Port_Init.h"
+#include "../inc/tm4c123gh6pm.h"
+#include "../inc/PLL.h"
+#include "../inc/CortexM.h"
+#include "../inc/Unified_Port_Init.h"
 
 /* Add whatever else you need here! */
-#include "lib/pid_controller/pid_controller.h"
-#include "lib/pid_controller/pid_controller_parser.h"
+#include "../lib/pid_controller/pid_controller.h"
+#include "../lib/pid_controller/pid_controller_parser.h"
 
 int main(void) {
     DisableInterrupts();

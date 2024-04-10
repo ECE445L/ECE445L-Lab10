@@ -9,7 +9,7 @@
  * 
  */
 
-#include "lib/pid_controller/pid_controller.h"
+#include "../../lib/pid_controller/pid_controller.h"
 
 pid_controller_t pid_controller_init(int32_t kpn, int32_t kpd, int32_t kin, int32_t kid, int32_t kdn, int32_t kdd) {
     // prevent 0s in denominators

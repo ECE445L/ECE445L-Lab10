@@ -12,10 +12,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "inc/CortexM.h"
-#include "inc/UART.h"
+#include "../../inc/CortexM.h"
+#include "../../inc/UART.h"
 
-#include "lib/pid_controller/pid_controller_parser.h"
+#include "../../lib/pid_controller/pid_controller_parser.h"
 
 #define MAX_CMD_SIZE 20     // max size for a parser command
 

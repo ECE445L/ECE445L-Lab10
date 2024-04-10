@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "lib/pid_controller/pid_controller.h"
+#include "../../lib/pid_controller/pid_controller.h"
 
 /**
  * @brief Starts PID controller UART parser on PA1-0. Spins infinitely so do NOT place in an ISR.
